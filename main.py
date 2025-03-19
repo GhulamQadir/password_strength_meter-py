@@ -1,13 +1,17 @@
 import re
 import streamlit as st
+import random
+import string
+
+
 st.markdown("""
         <style>
                .block-container {
-                    padding-top: 35px;
+                    padding-top: 30px;
                 }
         </style>
         """, unsafe_allow_html=True)
-st.title("🔏 Password Strength Meter")
+st.title("💪 Password Strength Meter")
 
 errorList:list[str] = []
 
@@ -62,9 +66,35 @@ def check_password_strength(password):
 
 
 # Get user input
-space = st.empty()
-space.markdown("<br>",unsafe_allow_html=True)
+st.markdown("<br>",unsafe_allow_html=True)
 password = st.text_input("Enter your password")
 if st.button("Check Password"):
     check_password_strength(password)
 
+
+
+#         PASSWORD GENERATOR 
+def generatePassword(length):
+    # STRING METHOD RETURNS ALL LETTERS, DIGITS, AND SPECIAL CHARACTERS
+    characters=string.ascii_letters+string.digits+string.punctuation
+
+    # Generates a random password of the specified length using the characters
+    return ''.join(random.choice(characters) for _ in range(length))    
+    
+
+st.markdown("<br>",unsafe_allow_html=True)
+st.subheader("🔒 Password Generator")
+length = st.slider("Select password length",min_value=8,max_value=32,value=12)  # length of password
+
+
+if st.button("Generate Password"):   # generate password button
+    password=generatePassword(length)
+    st.markdown(
+    f"""
+    <div style="display: flex; align-items: center;">   
+        <p style="margin-right: 10px;">Generated password: </p>
+        <p style="color: #FF474C">{password}</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
