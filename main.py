@@ -73,14 +73,18 @@ if st.button("Check Password"):
 
 
 
-#         PASSWORD GENERATOR 
+############################   PASSWORD GENERATOR   #############################
 def generatePassword(length):
     # STRING METHOD RETURNS ALL LETTERS, DIGITS, AND SPECIAL CHARACTERS
     characters=string.ascii_letters+string.digits+string.punctuation
 
     # Generates a random password of the specified length using the characters
     return ''.join(random.choice(characters) for _ in range(length))    
-    
+
+
+def escapeHtml(password):  # escaping html entities (<,>,&)
+    escapedPassword = password.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;").replace("'", "&#39;")
+    return escapedPassword
 
 st.markdown("<br>",unsafe_allow_html=True)
 st.subheader("🔒 Password Generator")
@@ -89,11 +93,14 @@ length = st.slider("Select password length",min_value=8,max_value=32,value=12)  
 
 if st.button("Generate Password"):   # generate password button
     password=generatePassword(length)
+    escapedPassword = escapeHtml(password)  # escaped password(converted entities)
+    
+    print(f"length=>>{len(password)}")
     st.markdown(
     f"""
     <div style="display: flex; align-items: center;">   
         <p style="margin-right: 10px;">Generated password: </p>
-        <p style="color: #FF474C">{password}</p>
+        <p style="color: #FF474C">{escapedPassword}</p>
     </div>
     """,
     unsafe_allow_html=True,
